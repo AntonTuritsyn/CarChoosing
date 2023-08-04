@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_car"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/car_picture_mini"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:cropToPadding="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_no_photo" />
+
+    <TextView
+        android:id="@+id/car_model"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_model"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/car_picture_mini"
+        app:layout_constraintStart_toStartOf="@id/car_picture_mini"
+        app:layout_constraintTop_toBottomOf="@id/car_picture_mini" />
+
+    <TextView
+        android:id="@+id/car_producer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_producer"
+        app:layout_constraintEnd_toEndOf="@id/car_model"
+        app:layout_constraintStart_toStartOf="@id/car_picture_mini"
+        app:layout_constraintTop_toBottomOf="@id/car_model" />
+
+    <TextView
+        android:id="@+id/car_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_price"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/car_producer"
+        app:layout_constraintStart_toStartOf="@id/car_picture_mini"
+        app:layout_constraintEnd_toEndOf="@id/car_picture_mini"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Car Choosing</string>
+<!--Основные параметры-->
+    <string name="car_model">Модель</string>
+    <string name="car_producer">Производитель</string>
+    <string name="car_price">Стоимость</string>
+<!--Подробное описание-->
+    <string name="car_speed">Скорость</string>
+    <string name="car_type">Тип</string>
+    <string name="car_color">Цвет</string>
+    <string name="car_year">Год выпуска</string>
+<!--Подсказки-->
+    <string name="car_model_hint">Введите модель</string>
+    <string name="car_producer_hint">Введите производителя</string>
+    <string name="car_price_hint">Введите стоимость в ₽</string>
+    <string name="car_speed_hint">Введите скорость</string>
+    <string name="car_type_hint">Введите тип</string>
+    <string name="car_color_hint">Введите цвет</string>
+    <string name="car_year_hint">Введите год выпуска</string>
+<!--Меню-->
+    <string name="add_car">Добавить</string>
+    <string name="model_filter">Фильтр (модель)</string>
+    <string name="producer_filter">Фильтр (произв.)</string>
+    <string name="price_sort">Сортировать (цена)</string>
+<!--Другое-->
+    <string name="gallery_button">Загрузить фото из галереи</string>
+    <string name="car_search">Поиск (фильтр)</string>
+</resources>
