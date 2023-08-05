@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.doOnLayout
@@ -18,7 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.turitsynanton.android.carchoosing.Car
+import com.turitsynanton.android.carchoosing.database.Car
 import com.turitsynanton.android.carchoosing.databinding.FragmentCarDetailsBinding
 import com.turitsynanton.android.carchoosing.getScaledBitmap
 import kotlinx.coroutines.launch
@@ -26,20 +28,37 @@ import java.io.File
 import java.util.Date
 
 class CarDetailFragment : Fragment() {
-
+    //      Вот тут я пока плаваю. Но вообще инициализация Navigation и ViewModel
     private val args: CarDetailFragmentArgs by navArgs()
     private val carDetailViewModel: CarDetailViewModel by viewModels {
         CarDetailViewModelFactory(args.carId)
     }
 
+    //      Пустая переменная для названия фото
     private var photoName: String? = null
 
+    //      Реализация запроса для использования камеры
     private val takePhoto = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto ->
         if (didTakePhoto && photoName != null) {
             carDetailViewModel.updateCar { oldCar ->
                 oldCar.copy(photoFileName = photoName)
+            }
+        }
+    }
+
+    //      Реализация запроса для использования галереи
+    private val useGallery = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            try {
+                val fileName = getFileNameFromUri(uri)
+                photoName = fileName
+                binding.carPicture.setImageURI(uri)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -64,11 +83,20 @@ class CarDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+//      Заполнение и перезапись в БД параметров авто
         binding.apply {
             carPriceEdit.doOnTextChanged { text, _, _, _ ->
-                carDetailViewModel.updateCar { oldCar ->
-                    oldCar.copy(price = text.toString())
+                val txt = text.toString()
+                val parsed = txt.toIntOrNull()
+                if (parsed != null) {
+                    carDetailViewModel.updateCar { oldCar ->
+                        oldCar.copy(price = parsed)
+                    }
+                } else {
+                    carDetailViewModel.updateCar { oldCar ->
+                        oldCar.copy(price = 0)
+                    }
+                    Toast.makeText(context, "Недопустимое значение", Toast.LENGTH_LONG).show()
                 }
             }
             carModelEdit.doOnTextChanged { text, _, _, _ ->
@@ -96,9 +124,11 @@ class CarDetailFragment : Fragment() {
                     oldCar.copy(color = text.toString())
                 }
             }
+//            загрузка изображения из галереи
             galleryButton.setOnClickListener {
-                TODO()
+                useGallery.launch("image/*")
             }
+//            Использоваие камеры
             cameraButton.setOnClickListener {
                 photoName = "IMG_${Date()}.JPG"
                 val photoFile = File(requireContext().applicationContext.filesDir, photoName)
@@ -112,8 +142,9 @@ class CarDetailFragment : Fragment() {
             val captureImageIntent =
                 takePhoto.contract.createIntent(requireContext(), Uri.parse(""))
             cameraButton.isEnabled = canResolveIntent(captureImageIntent)
-        }
 
+        }
+//      Обновление UI
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 carDetailViewModel.car.collect { car ->
@@ -129,10 +160,11 @@ class CarDetailFragment : Fragment() {
         _binding = null
     }
 
+    //      Логика функции обновления UI
     private fun updateUi(car: Car) {
         binding.apply {
-            if (carPriceEdit.text.toString() != car.price) {
-                carPriceEdit.setText(car.price)
+            if (carPriceEdit.text.toString() != car.price.toString()) {
+                carPriceEdit.setText(car.price.toString())
             }
             if (carModelEdit.text.toString() != car.model) {
                 carModelEdit.setText(car.model)
@@ -153,8 +185,8 @@ class CarDetailFragment : Fragment() {
         }
     }
 
+    //      проверка на доступность камеры на телефоне
     private fun canResolveIntent(intent: Intent): Boolean {
-//        intent.addCategory(Intent.CATEGORY_HOME)
         val packageManager: PackageManager = requireActivity().packageManager
         val resolveActivity: ResolveInfo? = packageManager.resolveActivity(
             intent,
@@ -163,17 +195,20 @@ class CarDetailFragment : Fragment() {
         return resolveActivity != null
     }
 
+    //      Логика обновления и прикрепления ФОТО в приложении
     private fun updatePhoto(photoFileName: String?) {
         if (binding.carPicture.tag != photoFileName) {
             val photoFile = photoFileName?.let {
                 File(requireContext().applicationContext.filesDir, it)
             }
             if (photoFile?.exists() == true) {
+                binding.carPicture.background = null
                 binding.carPicture.doOnLayout { measuredView ->
                     val scaledBitmap = getScaledBitmap(
                         photoFile.path,
-                        measuredView.width,
-                        measuredView.height
+                        measuredView.height,
+                        measuredView.width
+
                     )
                     binding.carPicture.setImageBitmap(scaledBitmap)
                     binding.carPicture.tag = photoFileName
@@ -183,5 +218,22 @@ class CarDetailFragment : Fragment() {
                 binding.carPicture.tag = null
             }
         }
+    }
+
+    //          Функция для получения названия картинки из галереи (не помогло)
+    private fun getFileNameFromUri(uri: Uri): String {
+        val cursor = context?.contentResolver?.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val displayNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (displayNameIndex != -1) {
+                    val pictureName = it.getString(displayNameIndex)
+                    if (!pictureName.isNullOrBlank()) {
+                        return pictureName
+                    }
+                }
+            }
+        }
+        return "unknown_filename"
     }
 }

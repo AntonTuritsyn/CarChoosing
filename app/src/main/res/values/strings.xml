@@ -19,10 +19,11 @@
     <string name="car_year_hint">Введите год выпуска</string>
 <!--Меню-->
     <string name="add_car">Добавить</string>
-    <string name="model_filter">Фильтр (модель)</string>
-    <string name="producer_filter">Фильтр (произв.)</string>
+    <string name="filter_model">Фильтр (модель)</string>
+    <string name="filter_producer">Фильтр (произв)</string>
+    <string name="filter_reset">Сброс фильтров</string>
     <string name="price_sort">Сортировать (цена)</string>
 <!--Другое-->
     <string name="gallery_button">Загрузить фото из галереи</string>
-    <string name="car_search">Поиск (фильтр)</string>
+
 </resources>

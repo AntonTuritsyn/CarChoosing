@@ -2,7 +2,7 @@ package com.turitsynanton.android.carchoosing.cardetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.turitsynanton.android.carchoosing.Car
+import com.turitsynanton.android.carchoosing.database.Car
 import com.turitsynanton.android.carchoosing.repository.CarRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class CarDetailViewModel(carId: UUID): ViewModel() {
+class CarDetailViewModel(carId: UUID) : ViewModel() {
 
     private val carRepository = CarRepository.get()
     private val _car: MutableStateFlow<Car?> = MutableStateFlow(null)

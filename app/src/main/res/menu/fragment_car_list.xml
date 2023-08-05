@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <item
         android:id="@+id/new_car"
-        android:title="@string/add_car"/>
-    <!--<item
-        android:id="@+id/model_filter"
-        android:title="@string/model_filter"/>
-    <item
-        android:id="@+id/producer_filter"
-        android:title="@string/producer_filter"/>-->
+        android:title="@string/add_car" />
     <item
         android:id="@+id/sort"
-        android:title="@string/price_sort"/>
+        android:title="@string/price_sort" />
+
     <item
-        android:id="@+id/app_bar_search"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/car_search"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always|withText"/>
+        android:id="@+id/filter_model"
+        android:title="@string/filter_model"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/filter_producer"
+        android:title="@string/filter_producer"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/reset_filter"
+        android:title="@string/filter_reset"
+        app:showAsAction="never" />
 
 </menu>
