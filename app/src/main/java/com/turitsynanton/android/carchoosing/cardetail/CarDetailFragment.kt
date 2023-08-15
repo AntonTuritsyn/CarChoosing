@@ -3,6 +3,7 @@ package com.turitsynanton.android.carchoosing.cardetail
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -23,11 +24,13 @@ import androidx.navigation.fragment.navArgs
 import com.turitsynanton.android.carchoosing.database.Car
 import com.turitsynanton.android.carchoosing.databinding.FragmentCarDetailsBinding
 import com.turitsynanton.android.carchoosing.getScaledBitmap
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
 
 class CarDetailFragment : Fragment() {
+
     //      Вот тут я пока плаваю. Но вообще инициализация Navigation и ViewModel
     private val args: CarDetailFragmentArgs by navArgs()
     private val carDetailViewModel: CarDetailViewModel by viewModels {
@@ -57,12 +60,14 @@ class CarDetailFragment : Fragment() {
                 val fileName = getFileNameFromUri(uri)
                 photoName = fileName
                 binding.carPicture.setImageURI(uri)
+                /*carDetailViewModel.updateCar { oldCar ->
+                    oldCar.copy(photoFileName = photoName)
+                }*/
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
     /*  создание переменной, которая в аксессоре get() проверяет, является ли _binding null.
         если нет, то возвращает значение _binding, если null, то выбрасывает IllegalStateException с сообщением
         Таким образом обеспечивается безопасный доступ к свойству binding*/
@@ -181,6 +186,9 @@ class CarDetailFragment : Fragment() {
             if (carColorEdit.text.toString() != car.color) {
                 carColorEdit.setText(car.color)
             }
+            if (photoNameUri.text.toString() != car.photoFileName) {
+                photoNameUri.setText(car.photoFileName)
+            }
             updatePhoto(car.photoFileName)
         }
     }
@@ -208,7 +216,6 @@ class CarDetailFragment : Fragment() {
                         photoFile.path,
                         measuredView.height,
                         measuredView.width
-
                     )
                     binding.carPicture.setImageBitmap(scaledBitmap)
                     binding.carPicture.tag = photoFileName
@@ -236,4 +243,9 @@ class CarDetailFragment : Fragment() {
         }
         return "unknown_filename"
     }
+    /*fun updateCarInDatabase(updatedCar: Car) {
+        viewModelScope.launch(Dispatchers.IO) {
+            carRepository.updateCar(updatedCar)
+        }
+    }*/
 }

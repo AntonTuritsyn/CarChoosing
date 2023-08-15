@@ -1,6 +1,9 @@
 package com.turitsynanton.android.carchoosing.carlist
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,7 +25,10 @@ import com.turitsynanton.android.carchoosing.database.Car
 import com.turitsynanton.android.carchoosing.R
 import com.turitsynanton.android.carchoosing.adapter.CarListAdapter
 import com.turitsynanton.android.carchoosing.databinding.FragmentCarListBinding
+import com.turitsynanton.android.carchoosing.databinding.ListItemCarBinding
+import com.turitsynanton.android.carchoosing.getScaledBitmap
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.UUID
 
 //      Фрагмет для вывода списка
@@ -54,7 +62,6 @@ class CarListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         /*      С помощью функции repeatOnLifecycle(...) выполняется сопрограммный код, пока фрагмент находится в заданном состоянии ЖЦ.
                 Например, этот код выполняется только тогда, когда фрагмент находится в запущенном или возобновленном состоянии.*/
         viewLifecycleOwner.lifecycleScope.launch {

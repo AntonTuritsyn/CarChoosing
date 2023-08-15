@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class CarListViewModel : ViewModel() {
     //    Получение экземпляра репозитория
@@ -20,6 +21,7 @@ class CarListViewModel : ViewModel() {
     private val _cars: MutableStateFlow<List<Car>> = MutableStateFlow(emptyList())
     val cars: StateFlow<List<Car>>
         get() = _cars.asStateFlow()
+
 
     //      Безопасное создание и доступ к List для хранения отфильтрованного списка авто
     private val _filteredCars: MutableStateFlow<List<Car>> = MutableStateFlow(emptyList())

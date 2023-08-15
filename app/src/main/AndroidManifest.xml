@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.turitsynanton.android.carchoosing">
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES">
+            </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    </uses-permission>
 
     <!--    Объявление об использовании приложением камеры-->
     <uses-feature

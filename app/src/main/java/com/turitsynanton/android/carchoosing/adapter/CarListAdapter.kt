@@ -17,7 +17,7 @@ class CarListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemCarBinding.inflate(inflater, parent, false)
-        return CarHolder(binding, onCarLongClicked)
+        return CarHolder(binding, onCarLongClicked, parent.context)
     }
 
     override fun onBindViewHolder(holder: CarHolder, position: Int) {

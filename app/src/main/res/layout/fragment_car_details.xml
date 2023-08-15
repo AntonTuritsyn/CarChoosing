@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/car_picture"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:cropToPadding="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_no_photo"
@@ -89,7 +89,6 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/car_price_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/car_producer"
@@ -101,7 +100,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/car_model_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textAlignment="textEnd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
@@ -114,7 +113,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/car_producer_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textAlignment="textEnd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
@@ -127,7 +126,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/car_type_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textAlignment="textEnd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
@@ -143,7 +142,7 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/car_year_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/car_producer"
@@ -154,13 +153,23 @@
         android:layout_height="wrap_content"
         android:hint="@string/car_color_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textAlignment="textEnd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/car_producer"
         app:layout_constraintTop_toBottomOf="@id/car_year_edit" />
+
+    <TextView
+        android:id="@+id/photo_nameUri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="название"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/car_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/gallery_button"
@@ -179,9 +188,10 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_photo"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/gallery_button"
+        app:layout_constraintBottom_toBottomOf="@id/gallery_button"
+        app:layout_constraintTop_toTopOf="@id/gallery_button"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
